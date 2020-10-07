@@ -90,7 +90,7 @@
         const context = canvas.getContext("2d");
         
         ciudad_actual = window.localStorage.getItem("ciudad_actual");
-        if (ciudad_actual == "undefined"){
+        if (ciudad_actual == "undefined" || typeof(ciudad_actual) == "undefined"){
             ciudad_actual = "Red";
         };
 
