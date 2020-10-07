@@ -148,7 +148,7 @@
             
             conexiones = {
                     "up":"Yellow",
-                    "down":"",
+                    "down":"Black",
                     "right":"",
                     "left":"Orange",
                     "url":"http://www.google.com"
@@ -157,7 +157,7 @@
             
             conexiones = {
                     "up":"Yellow",
-                    "down":"",
+                    "down":"Gray",
                     "right":"Lilac",
                     "left":"Green",
                     "url":"http://www.google.com"
@@ -166,12 +166,39 @@
             
             conexiones = {
                     "up":"",
-                    "down":"",
+                    "down":"Black",
                     "right":"Orange",
                     "left":"",
                     "url":"http://www.google.com"
                 }                
             mapa.nuevaCiudad("Green",.425,.48,conexiones);
+            
+            conexiones = {
+                    "up":"Orange",
+                    "down":"",
+                    "right":"Lilac",
+                    "left":"",
+                    "url":"http://www.google.com"
+                }                
+            mapa.nuevaCiudad("Gray",.585,.59,conexiones);
+            
+            conexiones = {
+                    "up":"",
+                    "down":"Rainbow",
+                    "right":"Lilac",
+                    "left":"Green",
+                    "url":"http://www.google.com"
+                }                
+            mapa.nuevaCiudad("Black",.53,.8,conexiones);
+            
+            conexiones = {
+                    "up":"Red",
+                    "down":"",
+                    "right":"Black",
+                    "left":"",
+                    "url":"http://www.google.com"
+                }                
+            mapa.nuevaCiudad("Rainbow",.252,.92,conexiones);
 
 
             setInterval(function(){
@@ -215,7 +242,7 @@
             else if (key == 13){
                 for (let i = 0; i < mapa.ciudades.length; i++){
                     if (mapa.ciudades[i].nombre == jugador.ciudad_actual){
-                        alert("Al pulsar aquí se visitará/mostrará la url que se elija para cada ciudad");
+                        alert("Al pulsar aquí se visitará/mostrará la url que se elija para la ciudad "+ mapa.ciudades[i].nombre);
                         //window.open(mapa.ciudades[i].conexiones["url"], target="_self");
                     }
                 }
