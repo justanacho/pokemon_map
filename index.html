@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body{
+                text-align: center;
+            }
+            canvas{
+                border: solid black 5px;
+                border-radius: 25px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>The Event Name</h1>
+        <canvas id="map" width = 800 height = 450></canvas>
+    </body>
+
+    <script>
+        
+
+        class Mapa{
+            constructor(w, h, imagen){
+                this.w = w;
+                this.h = h;
+                this.imagen = imagen;
+                this.ciudades = []
+            }
+            dibujarMapa(ctx){
+                ctx.drawImage(this.imagen, 0, 0, this.w, this.h);
+            }
+            nuevaCiudad(nombre, x, y, conexiones){
+                this.ciudades.push(new Ciudad(nombre, x * this.w, y * this.h, conexiones));
+            }
+            dibujarJugador(ctx, jugador){
+                for (let i = 0; i < this.ciudades.length; i++){
+                    let ciudad = this.ciudades[i];
+                    if (ciudad.nombre == jugador.ciudad_actual){
+                        context.beginPath();
+                        context.arc(ciudad.x, ciudad.y, 15, 0, Math.PI*2)
+                        context.fillStyle="#F00";
+                        context.fill();
+                        context.fillStyle="#000";
+
+                    }
+                }
+            }
+        }
+        class Ciudad{
+            constructor(nombre, x, y, conexiones){
+                this.nombre = nombre;
+                this.x = x;
+                this.y = y;
+                console.log(conexiones)
+                this.conexiones=conexiones;
+            }
+        }
+
+        class Jugador{
+            constructor(ciudad_actual){
+                this.ciudad_actual = ciudad_actual;
+            }
+            cambiarCiudad(ciudades, direccion){
+                let ciudad = "";
+                for (let i = 0; ciudades.length; i++){
+                    if (this.ciudad_actual == ciudades[i].nombre){
+                        ciudad = ciudades[i];
+                        break
+                    }
+                }
+                if (ciudad != ""){
+                    let new_city = ciudad.conexiones[direccion];
+                    if (new_city != ""){
+                        this.ciudad_actual = new_city;
+                        window.localStorage.setItem("ciudad_actual", new_city);
+                    }
+                }
+            }
+        }
+
+
+        const canvas = document.getElementById("map");
+        const canvas_width = 800;
+        const canvas_height = 450;
+        canvas.width = canvas_width;
+        canvas.height = canvas_height;
+
+
+        const context = canvas.getContext("2d");
+        
+        ciudad_actual = window.localStorage.getItem("ciudad_actual");
+        if (ciudad_actual == "undefined"){
+            ciudad_actual = "Red";
+        };
+
+        const jugador = new Jugador(ciudad_actual);
+
+
+        imagen_mapa = new Image();
+        imagen_mapa.src = "img/mapa.jpeg";
+        
+        imagen_mapa.onload = function () {
+            mapa = new Mapa(canvas_width, canvas_height, imagen_mapa);
+
+
+            //ciudades
+            conexiones = {
+                    "up":"Purple",
+                    "down":"",
+                    "right":"",
+                    "left":""
+                }
+            mapa.nuevaCiudad("Red",.252,.75,conexiones);
+            
+            conexiones = {
+                    "up":"Blue",
+                    "down":"Red",
+                    "right":"",
+                    "left":""
+                }
+            mapa.nuevaCiudad("Purple",.252,.53,conexiones);
+            
+            conexiones = {
+                    "up":"",
+                    "down":"Purple",
+                    "right":"Yellow",
+                    "left":""
+                }                
+            mapa.nuevaCiudad("Blue",.252,.37,conexiones);
+            
+            conexiones = {
+                    "up":"",
+                    "down":"Orange",
+                    "right":"Lilac",
+                    "left":"Blue"
+                }                
+            mapa.nuevaCiudad("Yellow",.585,.37,conexiones);
+            
+            conexiones = {
+                    "up":"Yellow",
+                    "down":"",
+                    "right":"",
+                    "left":"Orange"
+                }                
+            mapa.nuevaCiudad("Lilac",.8,.48,conexiones);
+            
+            conexiones = {
+                    "up":"Yellow",
+                    "down":"",
+                    "right":"Lilac",
+                    "left":"Green"
+                }                
+            mapa.nuevaCiudad("Orange",.585,.48,conexiones);
+            
+            conexiones = {
+                    "up":"",
+                    "down":"",
+                    "right":"Orange",
+                    "left":""
+                }                
+            mapa.nuevaCiudad("Green",.425,.48,conexiones);
+
+
+            setInterval(function(){
+                mapa.dibujarMapa(context);
+                
+                for (let i = 0; i < mapa.ciudades.length; i++){
+                    context.beginPath();
+                    context.arc(mapa.ciudades[i].x, mapa.ciudades[i].y, 20, 0, Math.PI*2);
+                    context.fill()
+                    context.font = "20px Georgia";
+                    context.fillText(mapa.ciudades[i].nombre, mapa.ciudades[i].x+20, mapa.ciudades[i].y-20)
+                }
+
+                mapa.dibujarJugador(context, jugador);
+
+            }, 50);
+        }
+
+
+        function getCursorPosition(canvas, event) {
+            const rect = canvas.getBoundingClientRect()
+            const x = event.clientX - rect.left
+            const y = event.clientY - rect.top
+            return {"x":Math.round(x), "y":Math.round(y)};
+        }
+
+        canvas.addEventListener("click", function(event){
+            let click_coordinates = getCursorPosition(canvas, event);
+            let click_radio = 10
+            console.log((click_coordinates["x"]/canvas_width).toString() +" , "+ (click_coordinates["y"]/canvas_height).toString());
+        });
+
+        document.addEventListener("keydown", function(event){
+            let key = event.keyCode;
+
+            if (key <= 40 && key >= 37){
+
+                dir = {40:"down",38:"up",37:"left",39:"right"}[key];
+                jugador.cambiarCiudad(mapa.ciudades, dir)
+            }
+
+        });
+
+        /*
+        down 40
+        up 38
+        left 37
+        right 39
+        */
+
+    </script>
+</html>
