@@ -15,6 +15,8 @@
     <body>
         <h1>The Event Name</h1>
         <canvas id="map" width = 800 height = 450></canvas>
+        <h2>Arrows to move</h2>
+        <h2>Enter to visit de city</h2>
     </body>
 
     <script>
@@ -112,7 +114,8 @@
                     "up":"Purple",
                     "down":"",
                     "right":"",
-                    "left":""
+                    "left":"",
+                    "url":"http://www.google.com"
                 }
             mapa.nuevaCiudad("Red",.252,.75,conexiones);
             
@@ -120,7 +123,8 @@
                     "up":"Blue",
                     "down":"Red",
                     "right":"",
-                    "left":""
+                    "left":"",
+                    "url":"http://www.google.com"
                 }
             mapa.nuevaCiudad("Purple",.252,.53,conexiones);
             
@@ -128,7 +132,8 @@
                     "up":"",
                     "down":"Purple",
                     "right":"Yellow",
-                    "left":""
+                    "left":"",
+                    "url":"http://www.google.com"
                 }                
             mapa.nuevaCiudad("Blue",.252,.37,conexiones);
             
@@ -136,7 +141,8 @@
                     "up":"",
                     "down":"Orange",
                     "right":"Lilac",
-                    "left":"Blue"
+                    "left":"Blue",
+                    "url":"http://www.google.com"
                 }                
             mapa.nuevaCiudad("Yellow",.585,.37,conexiones);
             
@@ -144,7 +150,8 @@
                     "up":"Yellow",
                     "down":"",
                     "right":"",
-                    "left":"Orange"
+                    "left":"Orange",
+                    "url":"http://www.google.com"
                 }                
             mapa.nuevaCiudad("Lilac",.8,.48,conexiones);
             
@@ -152,7 +159,8 @@
                     "up":"Yellow",
                     "down":"",
                     "right":"Lilac",
-                    "left":"Green"
+                    "left":"Green",
+                    "url":"http://www.google.com"
                 }                
             mapa.nuevaCiudad("Orange",.585,.48,conexiones);
             
@@ -160,7 +168,8 @@
                     "up":"",
                     "down":"",
                     "right":"Orange",
-                    "left":""
+                    "left":"",
+                    "url":"http://www.google.com"
                 }                
             mapa.nuevaCiudad("Green",.425,.48,conexiones);
 
@@ -197,11 +206,19 @@
 
         document.addEventListener("keydown", function(event){
             let key = event.keyCode;
-
+            console.log(key);
             if (key <= 40 && key >= 37){
 
                 dir = {40:"down",38:"up",37:"left",39:"right"}[key];
                 jugador.cambiarCiudad(mapa.ciudades, dir)
+            }
+            else if (key == 13){
+                for (let i = 0; i < mapa.ciudades.length; i++){
+                    if (mapa.ciudades[i].nombre == jugador.ciudad_actual){
+                        alert("Al pulsar aquí se visitará/mostrará la url que se elija para cada ciudad");
+                        //window.open(mapa.ciudades[i].conexiones["url"], target="_self");
+                    }
+                }
             }
 
         });
